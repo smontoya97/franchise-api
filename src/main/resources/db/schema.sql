@@ -1,6 +1,6 @@
-drop table if exists product;
-drop table if exists branch;
-drop table if exists franchise;
+drop table if exists products;
+drop table if exists branches;
+drop table if exists franchises;
 
 create table franchises (
   id UUID primary key,
