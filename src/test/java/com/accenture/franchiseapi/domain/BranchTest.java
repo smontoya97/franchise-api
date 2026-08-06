@@ -93,6 +93,16 @@ public class BranchTest {
         assertThrows(UnsupportedOperationException.class, () -> branch.getProducts().add(getProduct()));
     }
 
+    @Test
+    void shouldRenameBranch() {
+        String newName = "Sucursal Poblado Sur";
+        Branch branch = Branch.create(branchName);
+
+        branch.rename(newName);
+
+        assertEquals(newName, branch.getName());
+    }
+
 
     private Product getProduct() {
         String productName = "Coca-Cola";
