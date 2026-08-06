@@ -1,4 +1,4 @@
-package com.accenture.franchiseapi.infrastucture.adapter.out.persistence.repository;
+package com.accenture.franchiseapi.infrastucture.adapter.out.persistence.r2dbc;
 
 import java.util.UUID;
 
