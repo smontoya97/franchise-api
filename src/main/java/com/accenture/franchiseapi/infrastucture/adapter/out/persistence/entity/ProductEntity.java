@@ -37,11 +37,11 @@ public class ProductEntity implements Persistable<UUID> {
         this.isNewEntity = isNewEntity;
     }
 
-    public ProductEntity createNew(UUID id, UUID branchId, String name, int stock) {
+    public static ProductEntity createNew(UUID id, UUID branchId, String name, int stock) {
         return new ProductEntity(id, branchId, name, stock, true);
     }
 
-    public ProductEntity createExisting(UUID id, UUID branchId, String name, int stock) {
+    public static ProductEntity createExisting(UUID id, UUID branchId, String name, int stock) {
         return new ProductEntity(id, branchId, name, stock, false);
     }
 

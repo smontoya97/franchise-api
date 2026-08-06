@@ -34,11 +34,11 @@ public class BranchEntity implements Persistable<UUID> {
         this.isNewEntity = isNewEntity;
     }
 
-    public BranchEntity createNew(UUID id, UUID franchiseId, String name) {
+    public static BranchEntity createNew(UUID id, UUID franchiseId, String name) {
         return new BranchEntity(id, franchiseId, name, true);
     }
 
-    public BranchEntity createExisting(UUID id, UUID franchiseId, String name) {
+    public static BranchEntity createExisting(UUID id, UUID franchiseId, String name) {
         return new BranchEntity(id, franchiseId, name, false);
     }
 
