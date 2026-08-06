@@ -33,6 +33,10 @@ public class Product {
         );
     }
 
+    public void rename(String newName) {
+        this.name = validateName(newName);
+    }
+
     public void updateStock(int newStock) {
         this.stock = validateStock(newStock);
     }
