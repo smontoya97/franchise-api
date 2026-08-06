@@ -1,5 +1,6 @@
 package com.accenture.franchiseapi.domain.model;
 
+import com.accenture.franchiseapi.domain.exception.InvalidNameException;
 import com.accenture.franchiseapi.domain.exception.ProductNotFoundException;
 import com.accenture.franchiseapi.domain.model.valueobject.BranchId;
 import com.accenture.franchiseapi.domain.model.valueobject.ProductId;
@@ -69,7 +70,7 @@ public class Branch {
 
     private String validateName(String name) {
         if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Branch name cannot be blank");
+            throw new InvalidNameException("Branch name cannot be blank or null");
         }
         return name;
     }

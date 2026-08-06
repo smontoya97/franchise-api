@@ -10,12 +10,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ProductTest {
+    private final String productName = "Coca-Cola";
+    private final int productStock = 10;
 
     @Test
     void shouldCreateProductWithValidNameAndStock() {
-        String productName = "Coca-Cola";
-        int productStock = 10;
-
         Product product = Product.create(productName, productStock);
 
         assertEquals(productName, product.getName());
@@ -25,24 +24,20 @@ public class ProductTest {
 
     @Test
     void shouldRejectBlankName() {
-        String productName = "";
-        int productStock = 10;
+        String emptyProductName = "";
 
-        assertThrows(InvalidNameException.class, () -> Product.create(productName, productStock));
+        assertThrows(InvalidNameException.class, () -> Product.create(emptyProductName, productStock));
     }
 
     @Test
     void shouldRejectNegativeInitialStock() {
-        String productName = "Coca-Cola";
-        int productStock = -10;
+        int negativeProductStock = -10;
 
-        assertThrows(InvalidStockException.class, () -> Product.create(productName, productStock));
+        assertThrows(InvalidStockException.class, () -> Product.create(productName, negativeProductStock));
     }
 
     @Test
     void shouldUpdateStock() {
-        String productName = "Coca-Cola";
-        int productStock = 10;
         int newStock = 20;
         Product product = Product.create(productName, productStock);
 
@@ -53,8 +48,6 @@ public class ProductTest {
 
     @Test
     void shouldRenameProduct() {
-        String productName = "Coca-Cola";
-        int productStock = 10;
         String newName = "Coca-Cola Zero";
         Product product = Product.create(productName, productStock);
 
