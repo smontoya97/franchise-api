@@ -2,9 +2,9 @@ package com.accenture.franchiseapi.infrastructure.web;
 
 import com.accenture.franchiseapi.application.port.in.franchise.CreateFranchiseUseCase;
 import com.accenture.franchiseapi.domain.model.Franchise;
-import com.accenture.franchiseapi.infrastructure.adapter.in.web.FranchiseController;
+import com.accenture.franchiseapi.infrastructure.adapter.in.web.controller.FranchiseController;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.CreateFranchiseRequest;
-import com.accenture.franchiseapi.infrastructure.adapter.in.web.mapper.FranchiseWebMapper;
+import com.accenture.franchiseapi.infrastructure.adapter.in.web.mapper.WebMapper;
 import com.accenture.franchiseapi.infrastructure.exception.GlobalExceptionHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @WebFluxTest(FranchiseController.class)
-@Import({FranchiseWebMapper.class, GlobalExceptionHandler.class})
+@Import({WebMapper.class, GlobalExceptionHandler.class})
 public class FranchiseControllerTest {
 
     @Autowired
