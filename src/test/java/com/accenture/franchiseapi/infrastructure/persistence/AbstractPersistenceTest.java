@@ -1,9 +1,5 @@
 package com.accenture.franchiseapi.infrastructure.persistence;
 
-import com.accenture.franchiseapi.domain.model.Branch;
-import com.accenture.franchiseapi.domain.model.Franchise;
-import com.accenture.franchiseapi.domain.model.Product;
-import com.accenture.franchiseapi.domain.model.valueobject.FranchiseId;
 import com.accenture.franchiseapi.infrastructure.adapter.out.persistence.adapter.BranchRepositoryAdapter;
 import com.accenture.franchiseapi.infrastructure.adapter.out.persistence.adapter.FranchiseRepositoryAdapter;
 import com.accenture.franchiseapi.infrastructure.adapter.out.persistence.adapter.ProductRepositoryAdapter;
@@ -13,7 +9,6 @@ import com.accenture.franchiseapi.infrastructure.adapter.out.persistence.mapper.
 import com.accenture.franchiseapi.infrastructure.config.R2dbcConfig;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.r2dbc.test.autoconfigure.DataR2dbcTest;
 import org.springframework.context.annotation.Import;
@@ -23,9 +18,6 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import reactor.test.StepVerifier;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Testcontainers
 @DataR2dbcTest
@@ -38,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         BranchMapper.class,
         ProductMapper.class
 })
-public class FranchisePersistenceAdapterTest {
+public abstract class AbstractPersistenceTest {
 
     @Container
     static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:8.0")
@@ -55,13 +47,13 @@ public class FranchisePersistenceAdapterTest {
     }
 
     @Autowired
-    private FranchiseRepositoryAdapter franchiseRepositoryAdapter;
+    protected DatabaseClient databaseClient;
     @Autowired
-    private BranchRepositoryAdapter branchRepositoryAdapter;
+    protected FranchiseRepositoryAdapter franchiseRepositoryAdapter;
     @Autowired
-    private ProductRepositoryAdapter productRepositoryAdapter;
+    protected BranchRepositoryAdapter branchRepositoryAdapter;
     @Autowired
-    DatabaseClient databaseClient;
+    protected ProductRepositoryAdapter productRepositoryAdapter;
 
     @BeforeEach
     void createSchema() {
@@ -84,41 +76,5 @@ public class FranchisePersistenceAdapterTest {
         databaseClient.sql("delete from products").fetch().rowsUpdated().block();
         databaseClient.sql("delete from branches").fetch().rowsUpdated().block();
         databaseClient.sql("delete from franchises").fetch().rowsUpdated().block();
-    }
-
-    @Test
-    void shouldSaveAndRetrieveFranchiseWithBranchesAndProducts() {
-        String franchiseName = "Franquicia Medellín";
-        String branchName = "Sucursal Poblado";
-        String productName = "Coca-Cola";
-        int productStock = 10;
-        Franchise franchise = Franchise.create(franchiseName);
-        Franchise saved = franchiseRepositoryAdapter.save(franchise).block();
-        assert saved != null;
-        FranchiseId franchiseId = saved.getId();
-        Branch branch = Branch.create(branchName);
-        Branch savedBranch = branchRepositoryAdapter.save(branch, franchiseId).block();
-        Product product = Product.create(productName, productStock);
-        assert savedBranch != null;
-        productRepositoryAdapter.save(product, savedBranch.getId()).block();
-        int expectedSize = 1;
-
-        StepVerifier.create(franchiseRepositoryAdapter.findById(franchiseId))
-                .assertNext(result -> {
-                    assertEquals(franchiseName, result.getName());
-                    assertEquals(expectedSize, result.getBranches().size());
-                    Branch resultBranch = result.getBranches().getFirst();
-                    assertEquals(branchName, resultBranch.getName());
-                    assertEquals(expectedSize, resultBranch.getProducts().size());
-                    assertEquals(productName, resultBranch.getProducts().getFirst().getName());
-                    assertEquals(productStock, resultBranch.getProducts().getFirst().getStock());
-                })
-                .verifyComplete();
-    }
-
-    @Test
-    void shouldReturnEmptyMonoWhenFranchiseDoesNotExist() {
-        StepVerifier.create(franchiseRepositoryAdapter.findById(FranchiseId.newId()))
-                .verifyComplete();
     }
 }

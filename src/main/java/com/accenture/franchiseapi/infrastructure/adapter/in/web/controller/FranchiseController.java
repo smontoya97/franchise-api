@@ -1,9 +1,9 @@
-package com.accenture.franchiseapi.infrastructure.adapter.in.web;
+package com.accenture.franchiseapi.infrastructure.adapter.in.web.controller;
 
 import com.accenture.franchiseapi.application.port.in.franchise.CreateFranchiseUseCase;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.CreateFranchiseRequest;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.FranchiseResponse;
-import com.accenture.franchiseapi.infrastructure.adapter.in.web.mapper.FranchiseWebMapper;
+import com.accenture.franchiseapi.infrastructure.adapter.in.web.mapper.WebMapper;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public class FranchiseController {
 
     private final CreateFranchiseUseCase createFranchiseUseCase;
-    private final FranchiseWebMapper mapper;
+    private final WebMapper mapper;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
