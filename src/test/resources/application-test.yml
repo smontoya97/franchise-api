@@ -1,0 +1,7 @@
+spring:
+  webflux:
+    base-path: /api/v1
+
+logging:
+  level:
+    root: WARN
