@@ -46,6 +46,11 @@ public class BranchRepositoryAdapter implements BranchRepositoryPort {
                 .flatMap(this::assembleBranch);
     }
 
+    @Override
+    public Mono<Boolean> existsbyId(BranchId id) {
+        return branchRepository.existsById(id.value());
+    }
+
     private Mono<Branch> assembleBranch(BranchEntity entity) {
         return productRepository.findByBranchId(entity.getId())
                 .map(productMapper::toDomain)

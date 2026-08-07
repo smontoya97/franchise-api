@@ -2,19 +2,23 @@ package com.accenture.franchiseapi.infrastructure.persistence;
 
 import com.accenture.franchiseapi.domain.model.Branch;
 import com.accenture.franchiseapi.domain.model.Franchise;
+import com.accenture.franchiseapi.domain.model.Product;
 import com.accenture.franchiseapi.domain.model.valueobject.BranchId;
 import com.accenture.franchiseapi.domain.model.valueobject.FranchiseId;
+import com.accenture.franchiseapi.domain.model.valueobject.ProductId;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class BranchRepositoryAdapterTest extends AbstractPersistenceTest {
+public class ProductRepositoryAdapterTest extends AbstractPersistenceTest {
 
     @Test
-    void shouldSaveBranchUnderExistingFranchise() {
+    void shouldSaveProductUnderExistingBranch() {
         String franchiseName = "Franquicia Medellín";
         String branchName = "Sucursal Poblado";
+        String productName = "Coca-Cola";
+        int productStock = 10;
         Franchise franchise = Franchise.create(franchiseName);
         Franchise saved = franchiseRepositoryAdapter.save(franchise).block();
         assert saved != null;
@@ -24,14 +28,19 @@ public class BranchRepositoryAdapterTest extends AbstractPersistenceTest {
         assert savedBranch != null;
         BranchId branchId = savedBranch.getId();
 
-        StepVerifier.create(branchRepositoryAdapter.findById(branchId))
-                .assertNext(result -> assertEquals(branchName, result.getName()))
+        productRepositoryAdapter.save(Product.create(productName, productStock), branchId).block();
+
+        StepVerifier.create(productRepositoryAdapter.findByBranchId(branchId))
+                .assertNext(product -> {
+                    assertEquals(productName, product.getName());
+                    assertEquals(productStock, product.getStock());
+                })
                 .verifyComplete();
     }
 
     @Test
-    void shouldReturnEmptyMonoWhenBranchDoesNotExist() {
-        StepVerifier.create(branchRepositoryAdapter.findById(BranchId.newId()))
+    void shouldReturnEmptyMonoWhenProductDoesNotExist() {
+        StepVerifier.create(productRepositoryAdapter.findById(ProductId.newId()))
                 .verifyComplete();
     }
 }

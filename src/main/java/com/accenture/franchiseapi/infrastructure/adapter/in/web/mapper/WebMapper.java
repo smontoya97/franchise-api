@@ -2,11 +2,14 @@ package com.accenture.franchiseapi.infrastructure.adapter.in.web.mapper;
 
 import com.accenture.franchiseapi.application.command.branch.AddBranchCommand;
 import com.accenture.franchiseapi.application.command.franchise.CreateFranchiseCommand;
+import com.accenture.franchiseapi.application.command.product.AddProductCommand;
 import com.accenture.franchiseapi.domain.model.Branch;
 import com.accenture.franchiseapi.domain.model.Franchise;
 import com.accenture.franchiseapi.domain.model.Product;
+import com.accenture.franchiseapi.domain.model.valueobject.BranchId;
 import com.accenture.franchiseapi.domain.model.valueobject.FranchiseId;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.AddBranchRequest;
+import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.AddProductRequest;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.CreateFranchiseRequest;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.BranchResponse;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.FranchiseResponse;
@@ -49,7 +52,11 @@ public class WebMapper {
         );
     }
 
-    private ProductResponse toResponse(Product product) {
+    public AddProductCommand toCommand(UUID branchId, AddProductRequest request) {
+        return new AddProductCommand(BranchId.of(branchId), request.name(), request.initialStock());
+    }
+
+    public ProductResponse toResponse(Product product) {
         return new ProductResponse(
                 product.getId().value(),
                 product.getName(),
