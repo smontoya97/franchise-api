@@ -21,9 +21,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    runtimeOnly 'io.asyncer:r2dbc-mysql:1.4.2'
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.h2database:h2'
-	runtimeOnly 'io.r2dbc:r2dbc-h2'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-data-r2dbc-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-validation-test'
@@ -31,6 +30,11 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testAnnotationProcessor 'org.projectlombok:lombok'
+    testImplementation platform('org.testcontainers:testcontainers-bom:1.20.1')
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.testcontainers:mysql'
+    testImplementation 'org.testcontainers:r2dbc'
+    testRuntimeOnly 'com.mysql:mysql-connector-j'
 }
 
 tasks.named('test') {

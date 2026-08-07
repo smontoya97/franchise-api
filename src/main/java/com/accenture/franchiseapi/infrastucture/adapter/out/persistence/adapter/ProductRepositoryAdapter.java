@@ -25,7 +25,7 @@ public class ProductRepositoryAdapter implements ProductRepositoryPort {
     public Mono<Product> save(Product product, BranchId branchId) {
         ProductEntity entity = mapper.toNewEntity(product, branchId);
         return productRepository.save(entity)
-                .map(saved -> mapper.toDomain(saved));
+                .map(mapper::toDomain);
     }
 
     @Override

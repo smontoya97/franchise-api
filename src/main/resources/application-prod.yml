@@ -1,0 +1,9 @@
+spring:
+  r2dbc:
+    url: r2dbc:mysql://${DB_HOST:mysql}:3306/franchisedb
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+
+logging:
+  level:
+    org.springframework.r2dbc: WARN

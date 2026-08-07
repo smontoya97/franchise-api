@@ -22,7 +22,7 @@ public class BranchMapper {
 
     public Branch toDomain(BranchEntity entity, List<Product> products) {
         return Branch.reconstitute(
-                BranchId.of(entity.getFranchiseId()),
+                BranchId.of(entity.getId()),
                 entity.getName(),
                 products);
     }
