@@ -1,12 +1,6 @@
 spring:
   application:
     name: franchise-api
-
-  r2dbc:
-    url: r2dbc:h2:mem:///franchisedb;DB_CLOSE_DELAY=-1
-    username: sa
-    password:
-
   sql:
     init:
       mode: always
@@ -14,7 +8,3 @@ spring:
 
 server:
   port: 8080
-
-logging:
-  level:
-    org.springframework.r2dbc: DEBUG
