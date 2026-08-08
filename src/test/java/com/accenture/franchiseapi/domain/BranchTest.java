@@ -7,13 +7,14 @@ import com.accenture.franchiseapi.domain.model.Product;
 import com.accenture.franchiseapi.domain.model.valueobject.ProductId;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class BranchTest {
+class BranchTest {
 
     private final String branchName = "Sucursal Poblado";
 
@@ -58,8 +59,9 @@ public class BranchTest {
     @Test
     void shouldThrowWhenRemovingNonExistentProduct() {
         Branch branch = Branch.create(branchName);
+        ProductId productId = ProductId.newId();
 
-        assertThrows(ProductNotFoundException.class, () -> branch.removeProduct(ProductId.newId()));
+        assertThrows(ProductNotFoundException.class, () -> branch.removeProduct(productId));
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
@@ -89,8 +91,9 @@ public class BranchTest {
         Branch branch = Branch.create(branchName);
         Product product = getProduct();
         branch.addProduct(product);
+        List<Product> products = branch.getProducts();
 
-        assertThrows(UnsupportedOperationException.class, () -> branch.getProducts().add(getProduct()));
+        assertThrows(UnsupportedOperationException.class, () -> products.add(product));
     }
 
     @Test

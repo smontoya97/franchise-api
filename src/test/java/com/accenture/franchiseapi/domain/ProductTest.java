@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class ProductTest {
+class ProductTest {
     private final String productName = "Coca-Cola";
     private final int productStock = 10;
 

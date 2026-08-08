@@ -6,6 +6,7 @@ import com.accenture.franchiseapi.domain.exception.FranchiseNotFoundException;
 import com.accenture.franchiseapi.domain.exception.ProductNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -85,6 +86,14 @@ public class GlobalExceptionHandler {
         }
 
         return response(status, errorName, errorMessage);
+    }
+
+    @ExceptionHandler(DuplicateKeyException.class)
+    public Mono<ResponseEntity<ApiErrorReponse>> handleDuplicateKey(DuplicateKeyException ex) {
+        log.warn("Duplicated name conflict: {}", ex.getMessage());
+        String errorName = "DuplicateNameException";
+        String errorMessage = "A resource with this name already exists in this scope";
+        return response(HttpStatus.CONFLICT, errorName, errorMessage);
     }
 
     @ExceptionHandler(Exception.class)

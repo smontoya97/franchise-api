@@ -8,9 +8,14 @@ import reactor.core.publisher.Mono;
 
 public interface ProductRepositoryPort {
     Mono<Product> save(Product product, BranchId branchId);
+
     Mono<Product> findById(ProductId id);
+
     Flux<Product> findByBranchId(BranchId branchId);
+
     Mono<Void> deleteById(ProductId id);
+
     Mono<Boolean> existsByIdAndBranchId(ProductId productId, BranchId branchId);
+
     Mono<Product> update(Product product);
 }

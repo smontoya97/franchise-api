@@ -1,4 +1,4 @@
-package com.accenture.franchiseapi.application.service;
+package com.accenture.franchiseapi.application.service.product;
 
 import com.accenture.franchiseapi.application.command.product.RemoveProductCommand;
 import com.accenture.franchiseapi.application.port.in.product.RemoveProductUseCase;
@@ -18,7 +18,7 @@ public class RemoveProductService implements RemoveProductUseCase {
     public Mono<Void> execute(RemoveProductCommand command) {
         return productRepositoryPort.existsByIdAndBranchId(command.productId(), command.branchId())
                 .flatMap(exists -> exists
-                    ? productRepositoryPort.deleteById(command.productId())
-                    : Mono.error(new ProductNotFoundException(command.productId())));
+                        ? productRepositoryPort.deleteById(command.productId())
+                        : Mono.error(new ProductNotFoundException(command.productId())));
     }
 }

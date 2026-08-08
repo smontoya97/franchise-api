@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
@@ -32,7 +33,7 @@ import static org.mockito.Mockito.when;
 
 @WebFluxTest(FranchiseController.class)
 @Import({WebMapper.class, GlobalExceptionHandler.class})
-public class FranchiseControllerTest {
+class FranchiseControllerTest {
 
     @Autowired
     WebTestClient webTestClient;
@@ -126,5 +127,18 @@ public class FranchiseControllerTest {
                 .uri("/franchises/{franchiseId}", UUID.randomUUID())
                 .exchange()
                 .expectStatus().isNotFound();
+    }
+
+    @Test
+    void shouldReturn409WhenCreatingFranchiseWithDuplicateName() {
+        String franchiseName = "Franquicia Medellín";
+        when(createFranchiseUseCase.execute(any()))
+                .thenReturn(Mono.error(new DuplicateKeyException("Duplicate entry")));
+
+        webTestClient.post()
+                .uri("/franchises")
+                .bodyValue(new CreateFranchiseRequest(franchiseName))
+                .exchange()
+                .expectStatus().isEqualTo(409);
     }
 }

@@ -1,11 +1,10 @@
 package com.accenture.franchiseapi.infrastructure.adapter.out.persistence.mapper;
 
-import org.springframework.stereotype.Component;
-
 import com.accenture.franchiseapi.domain.model.Product;
 import com.accenture.franchiseapi.domain.model.valueobject.BranchId;
 import com.accenture.franchiseapi.domain.model.valueobject.ProductId;
 import com.accenture.franchiseapi.infrastructure.adapter.out.persistence.entity.ProductEntity;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ProductMapper {

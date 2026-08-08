@@ -1,5 +1,6 @@
-package com.accenture.franchiseapi.application.service;
+package com.accenture.franchiseapi.application.service.franchise;
 
+import com.accenture.franchiseapi.application.command.franchise.RenameFranchiseCommand;
 import com.accenture.franchiseapi.application.port.out.FranchiseRepositoryPort;
 import com.accenture.franchiseapi.domain.exception.FranchiseNotFoundException;
 import com.accenture.franchiseapi.domain.model.Franchise;
@@ -13,41 +14,41 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class GetFranchiseServiceTest {
+class RenameFranchiseServiceTest {
 
     @Mock
     private FranchiseRepositoryPort franchiseRepositoryPort;
     @InjectMocks
-    private GetFranchiseService getFranchiseService;
+    private RenameFranchiseService renameFranchiseService;
 
     @Test
-    void shouldReturnFranchiseWhenExists() {
+    void shouldRenameFranchiseWhenItExists() {
         String franchiseName = "Franquicia Medellín";
         Franchise existing = Franchise.create(franchiseName);
+        String newName = "Franquicia Medellín - Sur";
         when(franchiseRepositoryPort.findById(existing.getId())).thenReturn(Mono.just(existing));
+        when(franchiseRepositoryPort.update(any(Franchise.class)))
+                .thenAnswer(invocation -> Mono.just(invocation.getArgument(0)));
 
-        Mono<Franchise> result = getFranchiseService.execute(existing.getId());
+        Mono<Franchise> result = renameFranchiseService.execute(new RenameFranchiseCommand(existing.getId(), newName));
+
         StepVerifier.create(result)
-                .assertNext(franchise -> assertEquals(franchiseName, franchise.getName()))
+                .assertNext(franchise -> assertEquals(newName, franchise.getName()))
                 .verifyComplete();
-
-        verify(franchiseRepositoryPort).findById(existing.getId());
     }
 
     @Test
     void shouldFailWhenFranchiseDoesNotExist() {
         FranchiseId franchiseId = FranchiseId.newId();
+        String newName = "Franquicia Medellín - Sur";
         when(franchiseRepositoryPort.findById(franchiseId)).thenReturn(Mono.empty());
 
-        Mono<Franchise> result = getFranchiseService.execute(franchiseId);
-        StepVerifier.create(result)
+        StepVerifier.create(renameFranchiseService.execute(new RenameFranchiseCommand(franchiseId, newName)))
                 .expectError(FranchiseNotFoundException.class)
                 .verify();
-
-        verify(franchiseRepositoryPort).findById(franchiseId);
     }
 }

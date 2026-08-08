@@ -1,4 +1,4 @@
-package com.accenture.franchiseapi.application.service;
+package com.accenture.franchiseapi.application.service.branch;
 
 import com.accenture.franchiseapi.application.command.branch.AddBranchCommand;
 import com.accenture.franchiseapi.application.port.in.branch.AddBranchUseCase;
@@ -21,8 +21,8 @@ public class AddBranchService implements AddBranchUseCase {
     public Mono<Branch> execute(AddBranchCommand command) {
         return franchiseRepositoryPort.existsById(command.franchiseId())
                 .flatMap(exists -> exists
-                    ? Mono.defer(() -> Mono.just(Branch.create(command.branchName())))
-                    : Mono.error(new FranchiseNotFoundException(command.franchiseId())))
+                        ? Mono.defer(() -> Mono.just(Branch.create(command.branchName())))
+                        : Mono.error(new FranchiseNotFoundException(command.franchiseId())))
                 .flatMap(branch -> branchRepositoryPort.save(branch, command.franchiseId()));
     }
 }

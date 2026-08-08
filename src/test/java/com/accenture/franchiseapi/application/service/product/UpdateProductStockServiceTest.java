@@ -1,4 +1,4 @@
-package com.accenture.franchiseapi.application.service;
+package com.accenture.franchiseapi.application.service.product;
 
 import com.accenture.franchiseapi.application.command.product.UpdateProductStockCommand;
 import com.accenture.franchiseapi.application.port.out.ProductRepositoryPort;
@@ -19,7 +19,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class UpdateProductStockServiceTest {
+class UpdateProductStockServiceTest {
 
     @Mock
     private ProductRepositoryPort productRepositoryPort;

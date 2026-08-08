@@ -1,4 +1,4 @@
-package com.accenture.franchiseapi.application.service;
+package com.accenture.franchiseapi.application.service.product;
 
 import com.accenture.franchiseapi.application.command.product.UpdateProductStockCommand;
 import com.accenture.franchiseapi.application.port.in.product.UpdateProductStockUseCase;
@@ -19,8 +19,8 @@ public class UpdateProductStockService implements UpdateProductStockUseCase {
     public Mono<Product> execute(UpdateProductStockCommand command) {
         return productRepositoryPort.existsByIdAndBranchId(command.productId(), command.branchId())
                 .flatMap(exists -> exists
-                    ? productRepositoryPort.findById(command.productId())
-                    : Mono.error(new ProductNotFoundException(command.productId())))
+                        ? productRepositoryPort.findById(command.productId())
+                        : Mono.error(new ProductNotFoundException(command.productId())))
                 .map(product -> {
                     product.updateStock(command.newStock());
                     return product;

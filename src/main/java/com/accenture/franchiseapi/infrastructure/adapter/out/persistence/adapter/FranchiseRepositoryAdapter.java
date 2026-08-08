@@ -1,9 +1,5 @@
 package com.accenture.franchiseapi.infrastructure.adapter.out.persistence.adapter;
 
-import java.util.List;
-
-import org.springframework.stereotype.Repository;
-
 import com.accenture.franchiseapi.application.port.out.FranchiseRepositoryPort;
 import com.accenture.franchiseapi.domain.model.Branch;
 import com.accenture.franchiseapi.domain.model.Franchise;
@@ -16,9 +12,11 @@ import com.accenture.franchiseapi.infrastructure.adapter.out.persistence.mapper.
 import com.accenture.franchiseapi.infrastructure.adapter.out.persistence.r2dbc.BranchR2dbcRepository;
 import com.accenture.franchiseapi.infrastructure.adapter.out.persistence.r2dbc.FranchiseR2dbcRepository;
 import com.accenture.franchiseapi.infrastructure.adapter.out.persistence.r2dbc.ProductR2dbcRepository;
-
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Repository
 @AllArgsConstructor

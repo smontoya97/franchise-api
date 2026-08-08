@@ -1,4 +1,4 @@
-package com.accenture.franchiseapi.application.service;
+package com.accenture.franchiseapi.application.service.franchise;
 
 import com.accenture.franchiseapi.application.command.franchise.CreateFranchiseCommand;
 import com.accenture.franchiseapi.application.port.out.FranchiseRepositoryPort;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class CreateFranchiseServiceTest {
+class CreateFranchiseServiceTest {
 
     @Mock
     private FranchiseRepositoryPort franchiseRepositoryPort;

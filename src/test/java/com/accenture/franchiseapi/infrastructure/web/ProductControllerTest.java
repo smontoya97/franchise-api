@@ -2,6 +2,7 @@ package com.accenture.franchiseapi.infrastructure.web;
 
 import com.accenture.franchiseapi.application.port.in.product.AddProductUseCase;
 import com.accenture.franchiseapi.application.port.in.product.RemoveProductUseCase;
+import com.accenture.franchiseapi.application.port.in.product.RenameProductUseCase;
 import com.accenture.franchiseapi.application.port.in.product.UpdateProductStockUseCase;
 import com.accenture.franchiseapi.domain.exception.BranchNotFoundException;
 import com.accenture.franchiseapi.domain.exception.ProductNotFoundException;
@@ -28,7 +29,7 @@ import static org.mockito.Mockito.when;
 
 @WebFluxTest(ProductController.class)
 @Import({WebMapper.class, GlobalExceptionHandler.class})
-public class ProductControllerTest {
+class ProductControllerTest {
 
     @Autowired
     private WebTestClient webTestClient;
@@ -38,6 +39,8 @@ public class ProductControllerTest {
     private RemoveProductUseCase removeProductUseCase;
     @MockitoBean
     private UpdateProductStockUseCase updateProductStockUseCase;
+    @MockitoBean
+    private RenameProductUseCase renameProductUseCase;
 
     @Test
     void shouldAddProductAndReturn201() {

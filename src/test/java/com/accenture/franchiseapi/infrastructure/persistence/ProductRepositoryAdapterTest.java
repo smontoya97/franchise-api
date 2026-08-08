@@ -11,7 +11,7 @@ import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ProductRepositoryAdapterTest extends AbstractPersistenceTest {
+class ProductRepositoryAdapterTest extends AbstractPersistenceTest {
 
     @Test
     void shouldSaveProductUnderExistingBranch() {

@@ -66,7 +66,7 @@ public class FranchiseController {
             @Valid @RequestBody RenameRequest request
     ) {
         return renameFranchiseUseCase.execute(
-                    mapper.toRenameFranchiseCommand(franchiseId, request))
+                        mapper.toRenameFranchiseCommand(franchiseId, request))
                 .map(mapper::toResponse);
 
     }
