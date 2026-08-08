@@ -4,6 +4,7 @@ import com.accenture.franchiseapi.application.command.branch.AddBranchCommand;
 import com.accenture.franchiseapi.application.command.franchise.CreateFranchiseCommand;
 import com.accenture.franchiseapi.application.command.product.AddProductCommand;
 import com.accenture.franchiseapi.application.command.product.RemoveProductCommand;
+import com.accenture.franchiseapi.application.command.product.UpdateProductStockCommand;
 import com.accenture.franchiseapi.domain.model.Branch;
 import com.accenture.franchiseapi.domain.model.Franchise;
 import com.accenture.franchiseapi.domain.model.Product;
@@ -13,6 +14,7 @@ import com.accenture.franchiseapi.domain.model.valueobject.ProductId;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.AddBranchRequest;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.AddProductRequest;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.CreateFranchiseRequest;
+import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.UpdateProductStockRequest;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.BranchResponse;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.FranchiseResponse;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.ProductResponse;
@@ -68,5 +70,13 @@ public class WebMapper {
 
     public RemoveProductCommand toRemoveCommand(UUID branchId, UUID productId) {
         return new RemoveProductCommand(BranchId.of(branchId), ProductId.of(productId));
+    }
+
+    public UpdateProductStockCommand toUpdateProductStockCommand(
+            UUID branchId, UUID productId, UpdateProductStockRequest request
+    ) {
+        return new UpdateProductStockCommand(
+                BranchId.of(branchId), ProductId.of(productId), request.newStock()
+        );
     }
 }
