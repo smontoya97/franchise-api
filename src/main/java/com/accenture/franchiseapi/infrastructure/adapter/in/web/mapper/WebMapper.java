@@ -1,6 +1,7 @@
 package com.accenture.franchiseapi.infrastructure.adapter.in.web.mapper;
 
 import com.accenture.franchiseapi.application.command.branch.AddBranchCommand;
+import com.accenture.franchiseapi.application.command.branch.RenameBranchCommand;
 import com.accenture.franchiseapi.application.command.franchise.CreateFranchiseCommand;
 import com.accenture.franchiseapi.application.command.product.AddProductCommand;
 import com.accenture.franchiseapi.application.command.product.RemoveProductCommand;
@@ -94,7 +95,11 @@ public class WebMapper {
         );
     }
 
-    public RenameProductCommand toRenameCommand(UUID branchId, UUID productId, RenameRequest request) {
+    public RenameProductCommand toRenameProductCommand(UUID branchId, UUID productId, RenameRequest request) {
         return new RenameProductCommand(BranchId.of(branchId), ProductId.of(productId), request.name());
+    }
+
+    public RenameBranchCommand toRenameBranchCommand(UUID franchiseId, UUID branchId, RenameRequest request) {
+        return new RenameBranchCommand(FranchiseId.of(franchiseId), BranchId.of(branchId), request.name());
     }
 }

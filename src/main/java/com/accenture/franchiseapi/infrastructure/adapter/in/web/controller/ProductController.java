@@ -66,7 +66,7 @@ public class ProductController {
             @Valid @RequestBody RenameRequest request
     ) {
         return renameProductUseCase.execute(
-                        mapper.toRenameCommand(branchId, productId, request)
+                        mapper.toRenameProductCommand(branchId, productId, request)
                 )
                 .map(mapper::toResponse);
     }
