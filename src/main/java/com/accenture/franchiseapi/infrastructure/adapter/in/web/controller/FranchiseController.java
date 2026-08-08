@@ -1,6 +1,7 @@
 package com.accenture.franchiseapi.infrastructure.adapter.in.web.controller;
 
 import com.accenture.franchiseapi.application.port.in.franchise.CreateFranchiseUseCase;
+import com.accenture.franchiseapi.application.port.in.franchise.GetFranchiseUseCase;
 import com.accenture.franchiseapi.application.port.in.franchise.RenameFranchiseUseCase;
 import com.accenture.franchiseapi.application.port.in.franchise.TopStockPerBranchUseCase;
 import com.accenture.franchiseapi.domain.model.valueobject.FranchiseId;
@@ -33,6 +34,7 @@ public class FranchiseController {
     private final CreateFranchiseUseCase createFranchiseUseCase;
     private final TopStockPerBranchUseCase topStockPerBranchUseCase;
     private final RenameFranchiseUseCase renameFranchiseUseCase;
+    private final GetFranchiseUseCase getFranchiseUseCase;
     private final WebMapper mapper;
 
     @PostMapping
@@ -41,6 +43,14 @@ public class FranchiseController {
         return createFranchiseUseCase.execute(mapper.toCommand(request))
                 .map(mapper::toResponse);
     }
+
+    @GetMapping("/{franchiseId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<FranchiseResponse> getFranchise(@PathVariable UUID franchiseId) {
+        return getFranchiseUseCase.execute(FranchiseId.of(franchiseId))
+                .map(mapper::toResponse);
+    }
+
 
     @GetMapping("/{franchiseId}/top-stock-products")
     @ResponseStatus(HttpStatus.OK)
