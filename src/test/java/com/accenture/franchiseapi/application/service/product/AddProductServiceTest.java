@@ -1,4 +1,4 @@
-package com.accenture.franchiseapi.application.service;
+package com.accenture.franchiseapi.application.service.product;
 
 import com.accenture.franchiseapi.application.command.product.AddProductCommand;
 import com.accenture.franchiseapi.application.port.out.BranchRepositoryPort;

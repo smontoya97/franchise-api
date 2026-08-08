@@ -1,6 +1,7 @@
 package com.accenture.franchiseapi.infrastructure.web;
 
 import com.accenture.franchiseapi.application.port.in.branch.AddBranchUseCase;
+import com.accenture.franchiseapi.application.port.in.branch.RenameBranchUseCase;
 import com.accenture.franchiseapi.domain.exception.FranchiseNotFoundException;
 import com.accenture.franchiseapi.domain.model.Branch;
 import com.accenture.franchiseapi.domain.model.valueobject.FranchiseId;
@@ -29,6 +30,8 @@ class BranchControllerTest {
     private WebTestClient webTestClient;
     @MockitoBean
     private AddBranchUseCase addBranchUseCase;
+    @MockitoBean
+    private RenameBranchUseCase renameBranchUseCase;
 
     @Test
     void shouldAddBranchAndReturn201() {

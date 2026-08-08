@@ -1,4 +1,4 @@
-package com.accenture.franchiseapi.application.service;
+package com.accenture.franchiseapi.application.service.franchise;
 
 import com.accenture.franchiseapi.application.view.TopStockProductView;
 import com.accenture.franchiseapi.application.port.in.franchise.TopStockPerBranchUseCase;

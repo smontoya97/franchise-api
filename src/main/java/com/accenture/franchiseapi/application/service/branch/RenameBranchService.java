@@ -1,4 +1,4 @@
-package com.accenture.franchiseapi.application.service;
+package com.accenture.franchiseapi.application.service.branch;
 
 import com.accenture.franchiseapi.application.command.branch.RenameBranchCommand;
 import com.accenture.franchiseapi.application.port.in.branch.RenameBranchUseCase;
