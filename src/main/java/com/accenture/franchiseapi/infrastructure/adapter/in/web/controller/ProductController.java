@@ -2,8 +2,10 @@ package com.accenture.franchiseapi.infrastructure.adapter.in.web.controller;
 
 import com.accenture.franchiseapi.application.port.in.product.AddProductUseCase;
 import com.accenture.franchiseapi.application.port.in.product.RemoveProductUseCase;
+import com.accenture.franchiseapi.application.port.in.product.RenameProductUseCase;
 import com.accenture.franchiseapi.application.port.in.product.UpdateProductStockUseCase;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.AddProductRequest;
+import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.RenameRequest;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.UpdateProductStockRequest;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.ProductResponse;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.mapper.WebMapper;
@@ -30,6 +32,7 @@ public class ProductController {
     private final AddProductUseCase addProductUseCase;
     private final RemoveProductUseCase removeProductUseCase;
     private final UpdateProductStockUseCase updateProductStockUseCase;
+    private final RenameProductUseCase renameProductUseCase;
     private final WebMapper mapper;
 
     @PostMapping
@@ -51,6 +54,19 @@ public class ProductController {
     ) {
         return updateProductStockUseCase.execute(
                     mapper.toUpdateProductStockCommand(branchId, productId, request)
+                )
+                .map(mapper::toResponse);
+    }
+
+    @PatchMapping("{productId}/name")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<ProductResponse> renameProduct(
+            @PathVariable UUID branchId,
+            @PathVariable UUID productId,
+            @Valid @RequestBody RenameRequest request
+    ) {
+        return renameProductUseCase.execute(
+                        mapper.toRenameCommand(branchId, productId, request)
                 )
                 .map(mapper::toResponse);
     }
