@@ -49,6 +49,16 @@ public class FranchiseRepositoryAdapter implements FranchiseRepositoryPort {
         return franchiseRepository.existsById(id.value());
     }
 
+    @Override
+    public Mono<Franchise> update(Franchise franchise) {
+        return franchiseRepository.findById(franchise.getId().value())
+                .flatMap(existing -> {
+                    FranchiseEntity updated = FranchiseEntity.createExisting(existing.getId(), franchise.getName());
+                    return franchiseRepository.save(updated);
+                })
+                .map(saved -> franchiseMapper.toDomain(saved, franchise.getBranches()));
+    }
+
     private Mono<Franchise> assembleFranchise(FranchiseEntity franchiseEntity) {
         return branchRepository.findByFranchiseId(franchiseEntity.getId())
                 .flatMap(this::assembleBranch)

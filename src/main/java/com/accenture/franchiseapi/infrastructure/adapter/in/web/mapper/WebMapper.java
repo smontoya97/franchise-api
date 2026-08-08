@@ -1,9 +1,12 @@
 package com.accenture.franchiseapi.infrastructure.adapter.in.web.mapper;
 
 import com.accenture.franchiseapi.application.command.branch.AddBranchCommand;
+import com.accenture.franchiseapi.application.command.branch.RenameBranchCommand;
 import com.accenture.franchiseapi.application.command.franchise.CreateFranchiseCommand;
+import com.accenture.franchiseapi.application.command.franchise.RenameFranchiseCommand;
 import com.accenture.franchiseapi.application.command.product.AddProductCommand;
 import com.accenture.franchiseapi.application.command.product.RemoveProductCommand;
+import com.accenture.franchiseapi.application.command.product.RenameProductCommand;
 import com.accenture.franchiseapi.application.command.product.UpdateProductStockCommand;
 import com.accenture.franchiseapi.application.view.TopStockProductView;
 import com.accenture.franchiseapi.domain.model.Branch;
@@ -15,6 +18,7 @@ import com.accenture.franchiseapi.domain.model.valueobject.ProductId;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.AddBranchRequest;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.AddProductRequest;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.CreateFranchiseRequest;
+import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.RenameRequest;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.UpdateProductStockRequest;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.BranchResponse;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.FranchiseResponse;
@@ -90,5 +94,17 @@ public class WebMapper {
                 view.productName(),
                 view.stock()
         );
+    }
+
+    public RenameProductCommand toRenameProductCommand(UUID branchId, UUID productId, RenameRequest request) {
+        return new RenameProductCommand(BranchId.of(branchId), ProductId.of(productId), request.name());
+    }
+
+    public RenameBranchCommand toRenameBranchCommand(UUID franchiseId, UUID branchId, RenameRequest request) {
+        return new RenameBranchCommand(FranchiseId.of(franchiseId), BranchId.of(branchId), request.name());
+    }
+
+    public RenameFranchiseCommand toRenameFranchiseCommand(UUID franchiseId, RenameRequest request) {
+        return new RenameFranchiseCommand(FranchiseId.of(franchiseId), request.name());
     }
 }

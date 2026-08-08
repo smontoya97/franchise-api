@@ -11,4 +11,6 @@ public interface BranchRepositoryPort {
     Mono<Branch> findById(BranchId id);
     Flux<Branch> findByFranchiseId(FranchiseId franchiseId);
     Mono<Boolean> existsbyId(BranchId id);
+    Mono<Branch> update(Branch branch);
+    Mono<Boolean> existsByIdAndFranchiseId(BranchId branchId, FranchiseId franchiseId);
 }

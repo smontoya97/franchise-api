@@ -51,6 +51,21 @@ public class BranchRepositoryAdapter implements BranchRepositoryPort {
         return branchRepository.existsById(id.value());
     }
 
+    @Override
+    public Mono<Branch> update(Branch branch) {
+        return branchRepository.findById(branch.getId().value())
+                .flatMap(existing -> {
+                    BranchEntity updated = BranchEntity.createExisting(existing.getId(), existing.getFranchiseId(), branch.getName());
+                    return branchRepository.save(updated);
+                })
+                .map(saved -> branchMapper.toDomain(saved, branch.getProducts()));
+    }
+
+    @Override
+    public Mono<Boolean> existsByIdAndFranchiseId(BranchId branchId, FranchiseId franchiseId) {
+        return branchRepository.existsByIdAndFranchiseId(branchId.value(), franchiseId.value());
+    }
+
     private Mono<Branch> assembleBranch(BranchEntity entity) {
         return productRepository.findByBranchId(entity.getId())
                 .map(productMapper::toDomain)
