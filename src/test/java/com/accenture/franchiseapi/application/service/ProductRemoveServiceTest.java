@@ -1,7 +1,6 @@
 package com.accenture.franchiseapi.application.service;
 
 import com.accenture.franchiseapi.application.command.product.RemoveProductCommand;
-import com.accenture.franchiseapi.application.port.out.BranchRepositoryPort;
 import com.accenture.franchiseapi.application.port.out.ProductRepositoryPort;
 import com.accenture.franchiseapi.domain.exception.ProductNotFoundException;
 import com.accenture.franchiseapi.domain.model.valueobject.BranchId;
@@ -20,8 +19,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ProductRemoveServiceTest {
 
-    @Mock
-    private BranchRepositoryPort branchRepositoryPort;
     @Mock
     private ProductRepositoryPort productRepositoryPort;
     @InjectMocks

@@ -31,6 +31,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 })
 public abstract class AbstractPersistenceTest {
 
+    @SuppressWarnings("resource")
     static final MySQLContainer<?> mysql = new MySQLContainer<>("mysql:8.0")
             .withDatabaseName("franchisedb")
             .withUsername("test")

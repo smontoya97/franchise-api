@@ -44,10 +44,12 @@ class GlobalExceptionHandlerTest {
 
     @Test
     void shouldReturn400ForMalformedJson() {
+        String malformedJson = "{ this is not valid json}";
+
         webTestClient.post()
                 .uri("/franchises")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue("{ this is not valid json}")
+                .bodyValue(malformedJson)
                 .exchange()
                 .expectStatus().isBadRequest()
                 .expectBody()
