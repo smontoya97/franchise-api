@@ -7,3 +7,9 @@ spring:
 logging:
   level:
     org.springframework.r2dbc: WARN
+
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    enabled: false

@@ -53,7 +53,7 @@ public class GlobalExceptionHandler {
         return Mono.just(ResponseEntity.badRequest().body(body));
     }
 
-    @ExceptionHandler(ServerWebInputException.class)
+    @ExceptionHandler({ServerWebInputException.class, IllegalArgumentException.class})
     public Mono<ResponseEntity<ApiErrorReponse>> serverWebInputException(ServerWebInputException ex) {
         log.warn("Malformed request: {}", ex.getMessage());
         String errorName = "InvalidRequest";
