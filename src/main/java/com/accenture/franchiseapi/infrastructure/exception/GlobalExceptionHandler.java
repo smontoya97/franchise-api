@@ -4,6 +4,8 @@ import com.accenture.franchiseapi.domain.exception.BranchNotFoundException;
 import com.accenture.franchiseapi.domain.exception.DomainException;
 import com.accenture.franchiseapi.domain.exception.FranchiseNotFoundException;
 import com.accenture.franchiseapi.domain.exception.ProductNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -20,13 +22,17 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler({FranchiseNotFoundException.class, BranchNotFoundException.class, ProductNotFoundException.class})
     public Mono<ResponseEntity<ApiErrorReponse>> notFoundException(DomainException ex) {
+        log.warn("Resource not found: {}", ex.getMessage());
         return response(HttpStatus.NOT_FOUND, ex.getClass().getSimpleName(), ex.getMessage());
     }
 
     @ExceptionHandler(DomainException.class)
     public Mono<ResponseEntity<ApiErrorReponse>> domainException(DomainException ex) {
+        log.warn("Domain rule violated: {}", ex.getMessage());
         return response(HttpStatus.BAD_REQUEST, ex.getClass().getSimpleName(), ex.getMessage());
     }
 
@@ -37,7 +43,7 @@ public class GlobalExceptionHandler {
         List<String> details = ex.getBindingResult().getFieldErrors().stream()
                 .map(this::formatFieldError)
                 .toList();
-
+        log.warn("Validation failed: {}", details);
         ApiErrorReponse body = ApiErrorReponse.of(
                 HttpStatus.BAD_REQUEST.value(),
                 errorName,
@@ -49,13 +55,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ServerWebInputException.class)
     public Mono<ResponseEntity<ApiErrorReponse>> serverWebInputException(ServerWebInputException ex) {
+        log.warn("Malformed request: {}", ex.getMessage());
         String errorName = "InvalidRequest";
         String errorMessage = "Malformed request or invalid parameter type";
         return response(HttpStatus.BAD_REQUEST, errorName, errorMessage);
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
-    public Mono<ResponseEntity<ApiErrorReponse>> handleNoResourceFound(NoResourceFoundException ex) {
+    public Mono<ResponseEntity<ApiErrorReponse>> noResourceFound(NoResourceFoundException ex) {
+        log.warn("No resource found for path: {}", ex.getReason());
         String errorName = "NotFound";
         String errorMessage = "The requested resource does not exist";
         return response(HttpStatus.NOT_FOUND, errorName, errorMessage);
@@ -69,11 +77,19 @@ public class GlobalExceptionHandler {
         }
         String errorName = status.getReasonPhrase().replace(" ", "");
         String errorMessage = ex.getReason() != null ? ex.getReason() : status.getReasonPhrase();
+
+        if (status.is5xxServerError()) {
+            log.error("Unhandled server-side ResponseStatusException: {}", errorMessage, ex);
+        } else {
+            log.warn("ResponseStatusException [{}]: {}", status.value(), errorMessage);
+        }
+
         return response(status, errorName, errorMessage);
     }
 
     @ExceptionHandler(Exception.class)
     public Mono<ResponseEntity<ApiErrorReponse>> unexpectedException(Exception ex) {
+        log.error("Unexpected error occurred", ex);
         String errorName = "InternalServerError";
         String errorMessage = "An unexpected error occurred";
         return response(HttpStatus.INTERNAL_SERVER_ERROR, errorName, errorMessage);
