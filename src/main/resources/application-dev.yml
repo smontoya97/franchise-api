@@ -8,3 +8,9 @@ logging:
   level:
     org.springframework.r2dbc: DEBUG
     io.asyncer.r2dbc.mysql: DEBUG
+
+springdoc:
+  swagger-ui:
+    enabled: true
+  api-docs:
+    enabled: true
