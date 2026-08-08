@@ -43,4 +43,24 @@ public class ProductRepositoryAdapterTest extends AbstractPersistenceTest {
         StepVerifier.create(productRepositoryAdapter.findById(ProductId.newId()))
                 .verifyComplete();
     }
+
+    @Test
+    void shouldDeleteProductAndNoLongerAppearInBranch() {
+        String franchiseName = "Franquicia Medellín";
+        String branchName = "Sucursal Poblado";
+        String productName = "Coca-Cola";
+        int productStock = 10;
+        Franchise franchise = franchiseRepositoryAdapter.save(Franchise.create(franchiseName)).block();
+        Branch branch = branchRepositoryAdapter.save(Branch.create(branchName), franchise.getId()).block();
+        Product product = productRepositoryAdapter.save(Product.create(productName, productStock), branch.getId()).block();
+
+        StepVerifier.create(productRepositoryAdapter.existsByIdAndBranchId(product.getId(), branch.getId()))
+                .expectNext(true)
+                .verifyComplete();
+
+        productRepositoryAdapter.deleteById(product.getId()).block();
+
+        StepVerifier.create(productRepositoryAdapter.findByBranchId(branch.getId()))
+                .verifyComplete();
+    }
 }
