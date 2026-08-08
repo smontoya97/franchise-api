@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 
 @WebFluxTest(BranchController.class)
 @Import({WebMapper.class, GlobalExceptionHandler.class})
-public class BranchControllerTest {
+class BranchControllerTest {
 
     @Autowired
     private WebTestClient webTestClient;

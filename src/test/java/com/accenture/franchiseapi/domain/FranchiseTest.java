@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class FranchiseTest {
+class FranchiseTest {
     private final String franchiseName = "Franquicia Medellín";
 
     @Test
@@ -53,8 +53,9 @@ public class FranchiseTest {
     @Test
     void shouldThrowWhenBranchNotFound() {
         Franchise franchise = Franchise.create(franchiseName);
+        BranchId branchId = BranchId.newId();
 
-        assertThrows(BranchNotFoundException.class, () -> franchise.findBranch(BranchId.newId()));
+        assertThrows(BranchNotFoundException.class, () -> franchise.findBranch(branchId));
     }
 
     @Test

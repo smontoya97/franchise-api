@@ -16,7 +16,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 @WebFluxTest(FranchiseController.class)
 @Import({WebMapper.class, GlobalExceptionHandler.class})
-public class GlobalExceptionHandlerTest {
+class GlobalExceptionHandlerTest {
 
     @Autowired
     private WebTestClient webTestClient;

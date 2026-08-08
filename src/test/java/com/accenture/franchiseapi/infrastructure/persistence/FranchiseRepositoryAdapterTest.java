@@ -10,7 +10,7 @@ import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class FranchiseRepositoryAdapterTest extends AbstractPersistenceTest {
+class FranchiseRepositoryAdapterTest extends AbstractPersistenceTest {
 
     @Test
     void shouldSaveAndRetrieveFranchiseWithBranchesAndProducts() {
