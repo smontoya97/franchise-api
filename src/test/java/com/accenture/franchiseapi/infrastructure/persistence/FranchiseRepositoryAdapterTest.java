@@ -46,4 +46,20 @@ public class FranchiseRepositoryAdapterTest extends AbstractPersistenceTest {
         StepVerifier.create(franchiseRepositoryAdapter.findById(FranchiseId.newId()))
                 .verifyComplete();
     }
+
+    @Test
+    void shouldRenameBranchWithoutCreatingDuplicateRow() {
+        String franchiseName = "Franquicia Medellín";
+        String branchName = "Sucursal Poblado";
+        String newName = "Sucursal Poblado Norte";
+        Franchise franchise = franchiseRepositoryAdapter.save(Franchise.create(franchiseName)).block();
+        Branch branch = branchRepositoryAdapter.save(Branch.create(branchName), franchise.getId()).block();
+
+        branch.rename(newName);
+        branchRepositoryAdapter.update(branch).block();
+
+        StepVerifier.create(branchRepositoryAdapter.findByFranchiseId(franchise.getId()))
+                .assertNext(result -> assertEquals(newName, result.getName()))
+                .verifyComplete();
+    }
 }
