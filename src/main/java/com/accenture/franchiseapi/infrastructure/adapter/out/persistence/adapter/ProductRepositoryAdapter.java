@@ -49,4 +49,15 @@ public class ProductRepositoryAdapter implements ProductRepositoryPort {
     public Mono<Boolean> existsByIdAndBranchId(ProductId productId, BranchId branchId) {
         return productRepository.existsByIdAndBranchId(productId.value(), branchId.value());
     }
+
+    @Override
+    public Mono<Product> update(Product product) {
+        return productRepository.findById(product.getId().value())
+                .flatMap(existing -> {
+                    ProductEntity updated = ProductEntity.createExisting(
+                            existing.getId(), existing.getBranchId(), product.getName(), product.getStock());
+                    return productRepository.save(updated);
+                })
+                .map(mapper::toDomain);
+    }
 }
