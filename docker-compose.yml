@@ -19,5 +19,20 @@ services:
       timeout: 5s
       retries: 10
 
+  app:
+    build: .
+    container_name: api
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_R2DBC_URL: r2dbc:mysql://mysql:3306/franchisedb
+      SPRING_R2DBC_USERNAME: franchise_user
+      SPRING_R2DBC_PASSWORD: franchise_pass
+    ports:
+      - "8080:8080"
+
 volumes:
   mysql_data:
