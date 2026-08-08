@@ -19,7 +19,7 @@ public class AddBranchService implements AddBranchUseCase {
 
     @Override
     public Mono<Branch> execute(AddBranchCommand command) {
-        return franchiseRepositoryPort.existsbyId(command.franchiseId())
+        return franchiseRepositoryPort.existsById(command.franchiseId())
                 .flatMap(exists -> exists
                     ? Mono.defer(() -> Mono.just(Branch.create(command.branchName())))
                     : Mono.error(new FranchiseNotFoundException(command.franchiseId())))

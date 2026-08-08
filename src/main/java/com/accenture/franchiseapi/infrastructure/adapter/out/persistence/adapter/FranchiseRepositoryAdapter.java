@@ -45,7 +45,7 @@ public class FranchiseRepositoryAdapter implements FranchiseRepositoryPort {
     }
 
     @Override
-    public Mono<Boolean> existsbyId(FranchiseId id) {
+    public Mono<Boolean> existsById(FranchiseId id) {
         return franchiseRepository.existsById(id.value());
     }
 

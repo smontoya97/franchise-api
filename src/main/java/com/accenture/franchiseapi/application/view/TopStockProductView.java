@@ -1,4 +1,4 @@
-package com.accenture.franchiseapi.application.dto;
+package com.accenture.franchiseapi.application.view;
 
 public record TopStockProductView(
         String branchId,

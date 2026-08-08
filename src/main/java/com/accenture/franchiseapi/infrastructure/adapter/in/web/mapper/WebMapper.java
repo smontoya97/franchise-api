@@ -5,6 +5,7 @@ import com.accenture.franchiseapi.application.command.franchise.CreateFranchiseC
 import com.accenture.franchiseapi.application.command.product.AddProductCommand;
 import com.accenture.franchiseapi.application.command.product.RemoveProductCommand;
 import com.accenture.franchiseapi.application.command.product.UpdateProductStockCommand;
+import com.accenture.franchiseapi.application.view.TopStockProductView;
 import com.accenture.franchiseapi.domain.model.Branch;
 import com.accenture.franchiseapi.domain.model.Franchise;
 import com.accenture.franchiseapi.domain.model.Product;
@@ -18,6 +19,7 @@ import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.Upda
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.BranchResponse;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.FranchiseResponse;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.ProductResponse;
+import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.TopStockProductResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -77,6 +79,16 @@ public class WebMapper {
     ) {
         return new UpdateProductStockCommand(
                 BranchId.of(branchId), ProductId.of(productId), request.newStock()
+        );
+    }
+
+    public TopStockProductResponse toResponse(TopStockProductView view) {
+        return new TopStockProductResponse(
+                UUID.fromString(view.branchId()),
+                view.branchName(),
+                UUID.fromString(view.productId()),
+                view.productName(),
+                view.stock()
         );
     }
 }
