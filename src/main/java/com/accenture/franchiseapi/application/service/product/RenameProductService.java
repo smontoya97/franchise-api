@@ -2,7 +2,6 @@ package com.accenture.franchiseapi.application.service.product;
 
 import com.accenture.franchiseapi.application.command.product.RenameProductCommand;
 import com.accenture.franchiseapi.application.port.in.product.RenameProductUseCase;
-import com.accenture.franchiseapi.application.port.out.BranchRepositoryPort;
 import com.accenture.franchiseapi.application.port.out.ProductRepositoryPort;
 import com.accenture.franchiseapi.domain.exception.ProductNotFoundException;
 import com.accenture.franchiseapi.domain.model.Product;
@@ -14,7 +13,6 @@ import reactor.core.publisher.Mono;
 @AllArgsConstructor
 public class RenameProductService implements RenameProductUseCase {
 
-    private final BranchRepositoryPort branchRepositoryPort;
     private final ProductRepositoryPort productRepositoryPort;
 
     @Override
