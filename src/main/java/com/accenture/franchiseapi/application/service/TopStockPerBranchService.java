@@ -21,7 +21,7 @@ public class TopStockPerBranchService implements TopStockPerBranchUseCase {
 
     @Override
     public Flux<TopStockProductView> execute(FranchiseId franchiseId) {
-        return franchiseRepositoryPort.existsbyId(franchiseId)
+        return franchiseRepositoryPort.existsById(franchiseId)
                 .flatMapMany(exists -> exists
                     ? branchRepositoryPort.findByFranchiseId(franchiseId)
                     : Flux.error(new FranchiseNotFoundException(franchiseId)))
