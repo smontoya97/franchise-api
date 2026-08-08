@@ -8,4 +8,5 @@ public interface FranchiseRepositoryPort {
     Mono<Franchise> save(Franchise franchise);
     Mono<Franchise> findById(FranchiseId id);
     Mono<Boolean> existsById(FranchiseId id);
+    Mono<Franchise> update(Franchise franchise);
 }
