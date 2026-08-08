@@ -5,6 +5,7 @@ import com.accenture.franchiseapi.domain.model.Franchise;
 import com.accenture.franchiseapi.domain.model.Product;
 import com.accenture.franchiseapi.domain.model.valueobject.FranchiseId;
 import org.junit.jupiter.api.Test;
+import org.springframework.dao.DuplicateKeyException;
 import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -61,5 +62,15 @@ public class FranchiseRepositoryAdapterTest extends AbstractPersistenceTest {
         StepVerifier.create(branchRepositoryAdapter.findByFranchiseId(franchise.getId()))
                 .assertNext(result -> assertEquals(newName, result.getName()))
                 .verifyComplete();
+    }
+
+    @Test
+    void shouldRejectDuplicateFranchiseNameAtDatabaseLevel() {
+        String franchiseName = "Franquicia Medellín";
+        franchiseRepositoryAdapter.save(Franchise.create(franchiseName)).block();
+
+        StepVerifier.create(franchiseRepositoryAdapter.save(Franchise.create(franchiseName)))
+                .expectError(DuplicateKeyException.class)
+                .verify();
     }
 }

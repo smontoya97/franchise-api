@@ -32,11 +32,14 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 })
 public abstract class AbstractPersistenceTest {
 
-    @Container
-    static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:8.0")
+    static final MySQLContainer<?> mysql = new MySQLContainer<>("mysql:8.0")
             .withDatabaseName("franchisedb")
             .withUsername("test")
             .withPassword("test");
+
+    static {
+        mysql.start();
+    }
 
     @DynamicPropertySource
     static void overrideProperties(DynamicPropertyRegistry registry) {
@@ -58,12 +61,34 @@ public abstract class AbstractPersistenceTest {
     @BeforeEach
     void createSchema() {
         String ddl = """
-                create table if not exists franchises (id char(36) primary key, name varchar(150) not null);
-                create table if not exists branches (id char(36) primary key, franchise_id char(36) not null, name varchar(150) not null,
-                    constraint fk_branch_franchise foreign key (franchise_id) references franchises(id));
-                create table if not exists products (id char(36) primary key, branch_id char(36) not null, name varchar(150) not null,
-                    stock int not null default 0, constraint fk_product_branch foreign key (branch_id) references branches(id));
-                """;
+        create table if not exists franchises (
+            id char(36) primary key,
+            name varchar(150) not null,
+            constraint uk_franchise_name unique (name)
+        );
+
+        create table if not exists branches (
+            id char(36) primary key,
+            franchise_id char(36) not null,
+            name varchar(150) not null,
+            constraint fk_branch_franchise
+                foreign key (franchise_id) references franchises(id),
+            constraint uk_branch_name_per_franchise
+                unique (franchise_id, name)
+        );
+
+        create table if not exists products (
+            id char(36) primary key,
+            branch_id char(36) not null,
+            name varchar(150) not null,
+            stock int not null default 0,
+            constraint fk_product_branch
+                foreign key (branch_id) references branches(id),
+            constraint uk_product_name_per_branch
+                unique (branch_id, name)
+        );
+        """;
+
         for (String statement : ddl.split(";")) {
             if (!statement.isBlank()) {
                 databaseClient.sql(statement).fetch().rowsUpdated().block();
