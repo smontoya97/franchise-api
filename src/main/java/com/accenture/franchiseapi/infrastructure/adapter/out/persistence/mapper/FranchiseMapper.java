@@ -1,13 +1,12 @@
 package com.accenture.franchiseapi.infrastructure.adapter.out.persistence.mapper;
 
-import java.util.List;
-
-import org.springframework.stereotype.Component;
-
 import com.accenture.franchiseapi.domain.model.Branch;
 import com.accenture.franchiseapi.domain.model.Franchise;
 import com.accenture.franchiseapi.domain.model.valueobject.FranchiseId;
 import com.accenture.franchiseapi.infrastructure.adapter.out.persistence.entity.FranchiseEntity;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class FranchiseMapper {

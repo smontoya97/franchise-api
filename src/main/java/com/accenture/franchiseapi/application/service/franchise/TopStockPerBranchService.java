@@ -1,9 +1,9 @@
 package com.accenture.franchiseapi.application.service.franchise;
 
-import com.accenture.franchiseapi.application.view.TopStockProductView;
 import com.accenture.franchiseapi.application.port.in.franchise.TopStockPerBranchUseCase;
 import com.accenture.franchiseapi.application.port.out.BranchRepositoryPort;
 import com.accenture.franchiseapi.application.port.out.FranchiseRepositoryPort;
+import com.accenture.franchiseapi.application.view.TopStockProductView;
 import com.accenture.franchiseapi.domain.exception.FranchiseNotFoundException;
 import com.accenture.franchiseapi.domain.model.Branch;
 import com.accenture.franchiseapi.domain.model.valueobject.FranchiseId;
@@ -23,8 +23,8 @@ public class TopStockPerBranchService implements TopStockPerBranchUseCase {
     public Flux<TopStockProductView> execute(FranchiseId franchiseId) {
         return franchiseRepositoryPort.existsById(franchiseId)
                 .flatMapMany(exists -> exists
-                    ? branchRepositoryPort.findByFranchiseId(franchiseId)
-                    : Flux.error(new FranchiseNotFoundException(franchiseId)))
+                        ? branchRepositoryPort.findByFranchiseId(franchiseId)
+                        : Flux.error(new FranchiseNotFoundException(franchiseId)))
                 .flatMap(this::toTopStockProductView);
     }
 

@@ -8,9 +8,14 @@ import reactor.core.publisher.Mono;
 
 public interface BranchRepositoryPort {
     Mono<Branch> save(Branch branch, FranchiseId franchiseId);
+
     Mono<Branch> findById(BranchId id);
+
     Flux<Branch> findByFranchiseId(FranchiseId franchiseId);
+
     Mono<Boolean> existsbyId(BranchId id);
+
     Mono<Branch> update(Branch branch);
+
     Mono<Boolean> existsByIdAndFranchiseId(BranchId branchId, FranchiseId franchiseId);
 }

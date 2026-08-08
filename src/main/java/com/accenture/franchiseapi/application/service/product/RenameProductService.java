@@ -19,8 +19,8 @@ public class RenameProductService implements RenameProductUseCase {
     public Mono<Product> execute(RenameProductCommand command) {
         return productRepositoryPort.existsByIdAndBranchId(command.productId(), command.branchId())
                 .flatMap(exists -> exists
-                    ? productRepositoryPort.findById(command.productId())
-                    : Mono.error(new ProductNotFoundException(command.productId())))
+                        ? productRepositoryPort.findById(command.productId())
+                        : Mono.error(new ProductNotFoundException(command.productId())))
                 .map(product -> {
                     product.rename(command.newName());
                     return product;

@@ -53,7 +53,7 @@ public class ProductController {
             @Valid @RequestBody UpdateProductStockRequest request
     ) {
         return updateProductStockUseCase.execute(
-                    mapper.toUpdateProductStockCommand(branchId, productId, request)
+                        mapper.toUpdateProductStockCommand(branchId, productId, request)
                 )
                 .map(mapper::toResponse);
     }

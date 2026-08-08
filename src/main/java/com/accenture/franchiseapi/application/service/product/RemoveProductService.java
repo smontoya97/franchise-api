@@ -18,7 +18,7 @@ public class RemoveProductService implements RemoveProductUseCase {
     public Mono<Void> execute(RemoveProductCommand command) {
         return productRepositoryPort.existsByIdAndBranchId(command.productId(), command.branchId())
                 .flatMap(exists -> exists
-                    ? productRepositoryPort.deleteById(command.productId())
-                    : Mono.error(new ProductNotFoundException(command.productId())));
+                        ? productRepositoryPort.deleteById(command.productId())
+                        : Mono.error(new ProductNotFoundException(command.productId())));
     }
 }
