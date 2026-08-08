@@ -44,4 +44,9 @@ public class ProductRepositoryAdapter implements ProductRepositoryPort {
     public Mono<Void> deleteById(ProductId id) {
         return productRepository.deleteById(id.value());
     }
+
+    @Override
+    public Mono<Boolean> existsByIdAndBranchId(ProductId productId, BranchId branchId) {
+        return productRepository.existsByIdAndBranchId(productId.value(), branchId.value());
+    }
 }

@@ -1,9 +1,12 @@
 package com.accenture.franchiseapi.infrastructure.web;
 
 import com.accenture.franchiseapi.application.port.in.product.AddProductUseCase;
+import com.accenture.franchiseapi.application.port.in.product.RemoveProductUseCase;
 import com.accenture.franchiseapi.domain.exception.BranchNotFoundException;
+import com.accenture.franchiseapi.domain.exception.ProductNotFoundException;
 import com.accenture.franchiseapi.domain.model.Product;
 import com.accenture.franchiseapi.domain.model.valueobject.BranchId;
+import com.accenture.franchiseapi.domain.model.valueobject.ProductId;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.controller.ProductController;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.AddProductRequest;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.mapper.WebMapper;
@@ -29,6 +32,8 @@ public class ProductControllerTest {
     private WebTestClient webTestClient;
     @MockitoBean
     private AddProductUseCase addProductUseCase;
+    @MockitoBean
+    private RemoveProductUseCase removeProductUseCase;
 
     @Test
     void shouldAddProductAndReturn201() {
@@ -70,6 +75,31 @@ public class ProductControllerTest {
         webTestClient.post()
                 .uri("/branches/{branchId}/products", branchId)
                 .bodyValue(new AddProductRequest(productName, productStock))
+                .exchange()
+                .expectStatus().isNotFound();
+    }
+
+    @Test
+    void shouldRemoveProductAndReturn204() {
+        UUID branchId = UUID.randomUUID();
+        UUID productId = UUID.randomUUID();
+        when(removeProductUseCase.execute(any())).thenReturn(Mono.empty());
+
+        webTestClient.delete()
+                .uri("/branches/{branchId}/products/{productId}", branchId, productId)
+                .exchange()
+                .expectStatus().isNoContent();
+    }
+
+    @Test
+    void shouldReturn404WhenProductDoesNotBelongToBranch() {
+        UUID branchId = UUID.randomUUID();
+        UUID productId = UUID.randomUUID();
+        when(removeProductUseCase.execute(any()))
+                .thenReturn(Mono.error(new ProductNotFoundException(ProductId.of(productId))));
+
+        webTestClient.delete()
+                .uri("/branches/{branchId}/products/{productId}", branchId, productId)
                 .exchange()
                 .expectStatus().isNotFound();
     }

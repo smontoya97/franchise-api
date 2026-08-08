@@ -11,4 +11,5 @@ public interface ProductRepositoryPort {
     Mono<Product> findById(ProductId id);
     Flux<Product> findByBranchId(BranchId branchId);
     Mono<Void> deleteById(ProductId id);
+    Mono<Boolean> existsByIdAndBranchId(ProductId productId, BranchId branchId);
 }
