@@ -1,6 +1,7 @@
 package com.accenture.franchiseapi.infrastructure.web;
 
 import com.accenture.franchiseapi.application.port.in.franchise.CreateFranchiseUseCase;
+import com.accenture.franchiseapi.application.port.in.franchise.GetAllFranchisesUseCase;
 import com.accenture.franchiseapi.application.port.in.franchise.GetFranchiseUseCase;
 import com.accenture.franchiseapi.application.port.in.franchise.RenameFranchiseUseCase;
 import com.accenture.franchiseapi.application.port.in.franchise.TopStockPerBranchUseCase;
@@ -12,6 +13,7 @@ import com.accenture.franchiseapi.domain.model.Product;
 import com.accenture.franchiseapi.domain.model.valueobject.FranchiseId;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.controller.FranchiseController;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.CreateFranchiseRequest;
+import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.FranchiseSummaryResponse;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.TopStockProductResponse;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.mapper.WebMapper;
 import com.accenture.franchiseapi.infrastructure.exception.GlobalExceptionHandler;
@@ -45,6 +47,8 @@ class FranchiseControllerTest {
     private RenameFranchiseUseCase renameFranchiseUseCase;
     @MockitoBean
     private GetFranchiseUseCase getFranchiseUseCase;
+    @MockitoBean
+    private GetAllFranchisesUseCase getAllFranchisesUseCase;
 
     @Test
     void shouldCreateFranchiseAndReturn201() {
@@ -140,5 +144,37 @@ class FranchiseControllerTest {
                 .bodyValue(new CreateFranchiseRequest(franchiseName))
                 .exchange()
                 .expectStatus().isEqualTo(409);
+    }
+
+    @Test
+    void shouldListAllFranchisesAsSummaries() {
+        String franchiseMedellinName = "Franquicia Medellín";
+        String franchiseBogotaName = "Franquicia Bogotá";
+        int expectedSize = 2;
+        when(getAllFranchisesUseCase.execute())
+                .thenReturn(Flux.just(
+                        Franchise.create(franchiseMedellinName),
+                        Franchise.create(franchiseBogotaName)
+                ));
+
+        webTestClient.get()
+                .uri("/franchises")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(FranchiseSummaryResponse.class)
+                .hasSize(expectedSize);
+    }
+
+    @Test
+    void shouldReturnEmptyListWhenNoFranchisesExist() {
+        int expectedSize = 0;
+        when(getAllFranchisesUseCase.execute()).thenReturn(Flux.empty());
+
+        webTestClient.get()
+                .uri("/franchises")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(FranchiseSummaryResponse.class)
+                .hasSize(expectedSize);
     }
 }

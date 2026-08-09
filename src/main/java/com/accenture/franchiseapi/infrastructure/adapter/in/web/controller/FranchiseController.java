@@ -1,10 +1,10 @@
 package com.accenture.franchiseapi.infrastructure.adapter.in.web.controller;
 
 import com.accenture.franchiseapi.application.port.in.franchise.CreateFranchiseUseCase;
+import com.accenture.franchiseapi.application.port.in.franchise.GetAllFranchisesUseCase;
 import com.accenture.franchiseapi.application.port.in.franchise.GetFranchiseUseCase;
 import com.accenture.franchiseapi.application.port.in.franchise.RenameFranchiseUseCase;
 import com.accenture.franchiseapi.application.port.in.franchise.TopStockPerBranchUseCase;
-import com.accenture.franchiseapi.application.service.franchise.GetAllFranchisesService;
 import com.accenture.franchiseapi.domain.model.valueobject.FranchiseId;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.CreateFranchiseRequest;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.RenameRequest;
@@ -37,7 +37,7 @@ public class FranchiseController {
     private final TopStockPerBranchUseCase topStockPerBranchUseCase;
     private final RenameFranchiseUseCase renameFranchiseUseCase;
     private final GetFranchiseUseCase getFranchiseUseCase;
-    private final GetAllFranchisesService getAllFranchisesService;
+    private final GetAllFranchisesUseCase getAllFranchisesUseCase;
     private final WebMapper mapper;
 
     @PostMapping
@@ -57,7 +57,7 @@ public class FranchiseController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Flux<FranchiseSummaryResponse> getAllFranchises() {
-        return getAllFranchisesService.execute()
+        return getAllFranchisesUseCase.execute()
                 .map(mapper::toSummaryResponse);
     }
 
