@@ -22,9 +22,9 @@ chown ec2-user:ec2-user /opt/franchise-api
 # Environment file for docker-compose.prod.yml, pre-filled with the
 # real RDS endpoint that Terraform just created.
 cat > /opt/franchise-api/.env.prod << EOF
-DB_HOST=${db_host}
-DB_USER=${db_user}
-DB_PASSWORD=${db_password}
+SPRING_R2DBC_URL=r2dbc:mysql://${db_host}:3306/franchisedb
+SPRING_R2DBC_USERNAME=${db_user}
+SPRING_R2DBC_PASSWORD=${db_password}
 EOF
 chown ec2-user:ec2-user /opt/franchise-api/.env.prod
 chmod 600 /opt/franchise-api/.env.prod
