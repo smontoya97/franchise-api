@@ -38,3 +38,11 @@ out/
 
 ### Environment Variables ###
 .env.prod
+
+### Terraform ###
+iac/.terraform/
+iac/terraform.tfstate
+iac/terraform.tfstate.backup
+iac/terraform.tfvars
+iac/*.tfplan
+iac/crash.log
