@@ -40,3 +40,14 @@ variable "db_instance_class" {
   type    = string
   default = "db.t4g.micro"
 }
+
+variable "domain_name" {
+  description = "Root domain name registered externally"
+  type        = string
+}
+
+variable "subdomain" {
+  description = "Subdomain used for this specific project"
+  type        = string
+  default     = "franchise-api"
+}

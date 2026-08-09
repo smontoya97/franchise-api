@@ -12,3 +12,13 @@ output "ssh_command" {
   description = "Ready-to-use SSH command to connect to the instance"
   value       = "ssh -i /path/to/${var.key_pair_name}.pem ec2-user@${aws_eip.franchise_api_eip.public_ip}"
 }
+
+output "route53_nameservers" {
+  description = "Point your domain's nameservers (at your external registrar) to these"
+  value       = aws_route53_zone.primary.name_servers
+}
+
+output "api_domain" {
+  description = "Full domain name for the API, once nameservers propagate"
+  value       = aws_route53_record.franchise_api.name
+}
