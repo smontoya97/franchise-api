@@ -4,11 +4,11 @@ resource "aws_security_group" "ec2_sg" {
   vpc_id      = data.aws_vpc.default.id
 
   ingress {
-    description = "SSH - restricted to your IP only"
+    description = "SSH - open for CI/CD pipeline access (protected by key-based auth)"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [var.admin_ip_cidr]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
