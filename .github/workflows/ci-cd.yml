@@ -73,7 +73,8 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd /opt/franchise-api/app
-            git pull origin main
+            git fetch origin
+            git reset --hard origin/main
             docker compose -f docker-compose.prod.yml pull
             docker compose -f docker-compose.prod.yml up -d
             docker image prune -f
