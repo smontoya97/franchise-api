@@ -1,6 +1,7 @@
 package com.accenture.franchiseapi.infrastructure.exception;
 
 import com.accenture.franchiseapi.application.port.in.franchise.CreateFranchiseUseCase;
+import com.accenture.franchiseapi.application.port.in.franchise.GetAllFranchisesUseCase;
 import com.accenture.franchiseapi.application.port.in.franchise.GetFranchiseUseCase;
 import com.accenture.franchiseapi.application.port.in.franchise.RenameFranchiseUseCase;
 import com.accenture.franchiseapi.application.port.in.franchise.TopStockPerBranchUseCase;
@@ -28,6 +29,8 @@ class GlobalExceptionHandlerTest {
     private TopStockPerBranchUseCase topStockPerBranchUseCase;
     @MockitoBean
     private RenameFranchiseUseCase renameFranchiseUseCase;
+    @MockitoBean
+    private GetAllFranchisesUseCase getAllFranchisesUseCase;
 
     @Test
     void shouldReturnDetailedValidationErrorsWhenNameIsBlank() {

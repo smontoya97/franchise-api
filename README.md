@@ -11,6 +11,7 @@ This README is generated from the repository sources (Gradle build, controllers,
 - Core domain: Franchise -> Branch -> Product. A Franchise owns zero or more Branches; a Branch owns zero or more Products.
 - Primary capabilities implemented by the API:
   - Create and read a Franchise (including its branches and products)
+  - Get summary of all franchises
   - Add Branch to an existing Franchise
   - Rename Franchise / Branch / Product
   - Add Product to a Branch with initial stock
@@ -54,12 +55,15 @@ Each nontrivial choice is included to support a fully reactive pipeline (R2DBC +
 The `docs/diagrams/` folder contains visuals used to explain the system. Embedded here with captions:
 
 ![Class diagram](docs/diagrams/class-diagram.png)
+
 *Class diagram showing the main domain model (Franchise, Branch, Product) and key relationships.*
 
 ![Architecture diagram](docs/diagrams/architecture-diagram.png)
+
 *High-level hexagonal / clean architecture diagram showing inbound adapters (web), application/use-cases, domain and outbound adapters (persistence).* 
 
 ![AWS architecture](docs/diagrams/aws-architecture.png)
+
 *Simplified AWS deployment diagram: single EC2 running Docker Compose (app + Caddy), an RDS MySQL instance in private subnets, Route53 record pointing to an Elastic IP.*
 
 ---
@@ -184,6 +188,9 @@ Franchises
   - Create a franchise.
   - Request body: { "name": "<string, 3-150 chars>" }
   - Response: Franchise (201)
+
+- GET /api/v1/franchises
+  - Get summary of all franchises (200)
 
 - GET /api/v1/franchises/{franchiseId}
   - Get franchise details including branches and products (200)

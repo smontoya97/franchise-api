@@ -73,4 +73,17 @@ class FranchiseRepositoryAdapterTest extends AbstractPersistenceTest {
                 .expectError(DuplicateKeyException.class)
                 .verify();
     }
+
+    @Test
+    void shouldListAllFranchisesWithoutAssemblingBranches() {
+        String franchiseMedellinName = "Franquicia Medellín";
+        String franchiseBogotaName = "Franquicia Bogotá";
+        int expectedSize = 2;
+        franchiseRepositoryAdapter.save(Franchise.create(franchiseMedellinName)).block();
+        franchiseRepositoryAdapter.save(Franchise.create(franchiseBogotaName)).block();
+
+        StepVerifier.create(franchiseRepositoryAdapter.getAll())
+                .expectNextCount(expectedSize)
+                .verifyComplete();
+    }
 }

@@ -1,6 +1,7 @@
 package com.accenture.franchiseapi.infrastructure.adapter.in.web.controller;
 
 import com.accenture.franchiseapi.application.port.in.franchise.CreateFranchiseUseCase;
+import com.accenture.franchiseapi.application.port.in.franchise.GetAllFranchisesUseCase;
 import com.accenture.franchiseapi.application.port.in.franchise.GetFranchiseUseCase;
 import com.accenture.franchiseapi.application.port.in.franchise.RenameFranchiseUseCase;
 import com.accenture.franchiseapi.application.port.in.franchise.TopStockPerBranchUseCase;
@@ -8,6 +9,7 @@ import com.accenture.franchiseapi.domain.model.valueobject.FranchiseId;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.CreateFranchiseRequest;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.RenameRequest;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.FranchiseResponse;
+import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.FranchiseSummaryResponse;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.TopStockProductResponse;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.mapper.WebMapper;
 import jakarta.validation.Valid;
@@ -35,6 +37,7 @@ public class FranchiseController {
     private final TopStockPerBranchUseCase topStockPerBranchUseCase;
     private final RenameFranchiseUseCase renameFranchiseUseCase;
     private final GetFranchiseUseCase getFranchiseUseCase;
+    private final GetAllFranchisesUseCase getAllFranchisesUseCase;
     private final WebMapper mapper;
 
     @PostMapping
@@ -51,6 +54,12 @@ public class FranchiseController {
                 .map(mapper::toResponse);
     }
 
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public Flux<FranchiseSummaryResponse> getAllFranchises() {
+        return getAllFranchisesUseCase.execute()
+                .map(mapper::toSummaryResponse);
+    }
 
     @GetMapping("/{franchiseId}/top-stock-products")
     @ResponseStatus(HttpStatus.OK)
