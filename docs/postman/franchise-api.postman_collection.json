@@ -1,0 +1,177 @@
+{
+  "info": {
+    "_postman_id": "franchise-api-collection-0001",
+    "name": "Franchise API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Collection for Franchise API. Uses {{base_url}} for convenience; includes host/path components to ensure Postman renders the URL field."
+  },
+  "item": [
+    {
+      "name": "Franchises",
+      "item": [
+        {
+          "name": "Create Franchise",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Acme Franchise\"\n}", "options": { "raw": { "language": "json" } } },
+            "url": {
+              "raw": "{{base_url}}/franchises",
+              "host": ["{{base_host}}"],
+              "port": "{{base_port}}",
+              "path": ["api","v1","franchises"]
+            }
+          },
+          "event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });", "if (pm.response.code === 201) { try { const json = pm.response.json(); if (json && json.id) { pm.environment.set('franchiseId', json.id); } } catch (e) {} }" ] } } ]
+        },
+        {
+          "name": "Get Franchise",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/franchises/{{franchiseId}}",
+              "host": ["{{base_host}}"],
+              "port": "{{base_port}}",
+              "path": ["api","v1","franchises","{{franchiseId}}"]
+            }
+          },
+          "event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });" ] } } ]
+        },
+        {
+          "name": "Top Stock Products per Branch",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/franchises/{{franchiseId}}/top-stock-products",
+              "host": ["{{base_host}}"],
+              "port": "{{base_port}}",
+              "path": ["api","v1","franchises","{{franchiseId}}","top-stock-products"]
+            }
+          },
+          "event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });" ] } } ]
+        },
+        {
+          "name": "Rename Franchise",
+          "request": {
+            "method": "PATCH",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Acme International\"\n}", "options": { "raw": { "language": "json" } } },
+            "url": {
+              "raw": "{{base_url}}/franchises/{{franchiseId}}/name",
+              "host": ["{{base_host}}"],
+              "port": "{{base_port}}",
+              "path": ["api","v1","franchises","{{franchiseId}}","name"]
+            }
+          },
+          "event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });" ] } } ]
+        }
+      ]
+    },
+    {
+      "name": "Branches",
+      "item": [
+        {
+          "name": "Add Branch",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Downtown Branch\"\n}", "options": { "raw": { "language": "json" } } },
+            "url": {
+              "raw": "{{base_url}}/franchises/{{franchiseId}}/branches",
+              "host": ["{{base_host}}"],
+              "port": "{{base_port}}",
+              "path": ["api","v1","franchises","{{franchiseId}}","branches"]
+            }
+          },
+          "event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });", "if (pm.response.code === 201) { try { const json = pm.response.json(); if (json && json.id) { pm.environment.set('branchId', json.id); } } catch (e) {} }" ] } } ]
+        },
+        {
+          "name": "Rename Branch",
+          "request": {
+            "method": "PATCH",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Uptown Branch\"\n}", "options": { "raw": { "language": "json" } } },
+            "url": {
+              "raw": "{{base_url}}/franchises/{{franchiseId}}/branches/{{branchId}}/name",
+              "host": ["{{base_host}}"],
+              "port": "{{base_port}}",
+              "path": ["api","v1","franchises","{{franchiseId}}","branches","{{branchId}}","name"]
+            }
+          },
+          "event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });" ] } } ]
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Add Product",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Gizmo\",\n  \"initial_stock\": 20\n}", "options": { "raw": { "language": "json" } } },
+            "url": {
+              "raw": "{{base_url}}/branches/{{branchId}}/products",
+              "host": ["{{base_host}}"],
+              "port": "{{base_port}}",
+              "path": ["api","v1","branches","{{branchId}}","products"]
+            }
+          },
+          "event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });", "if (pm.response.code === 201) { try { const json = pm.response.json(); if (json && json.id) { pm.environment.set('productId', json.id); } } catch (e) {} }" ] } } ]
+        },
+        {
+          "name": "Update Product Stock",
+          "request": {
+            "method": "PATCH",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"new_stock\": 15\n}", "options": { "raw": { "language": "json" } } },
+            "url": {
+              "raw": "{{base_url}}/branches/{{branchId}}/products/{{productId}}/stock",
+              "host": ["{{base_host}}"],
+              "port": "{{base_port}}",
+              "path": ["api","v1","branches","{{branchId}}","products","{{productId}}","stock"]
+            }
+          },
+          "event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });" ] } } ]
+        },
+        {
+          "name": "Rename Product",
+          "request": {
+            "method": "PATCH",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Gizmo Pro\"\n}", "options": { "raw": { "language": "json" } } },
+            "url": {
+              "raw": "{{base_url}}/branches/{{branchId}}/products/{{productId}}/name",
+              "host": ["{{base_host}}"],
+              "port": "{{base_port}}",
+              "path": ["api","v1","branches","{{branchId}}","products","{{productId}}","name"]
+            }
+          },
+          "event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });" ] } } ]
+        },
+        {
+          "name": "Remove Product",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/branches/{{branchId}}/products/{{productId}}",
+              "host": ["{{base_host}}"],
+              "port": "{{base_port}}",
+              "path": ["api","v1","branches","{{branchId}}","products","{{productId}}"]
+            }
+          },
+          "event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('Status code is 204', function () { pm.response.to.have.status(204); });", "if (pm.response.code === 204) { pm.environment.unset('productId'); }" ] } } ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "base_url", "value": "https://franchise-api.smontoya.online/api/v1" },
+    { "key": "base_host", "value": "franchise-api.smontoya.online" },
+    { "key": "base_port", "value": "" },
+    { "key": "franchiseId", "value": "" },
+    { "key": "branchId", "value": "" },
+    { "key": "productId", "value": "" }
+  ]
+}
