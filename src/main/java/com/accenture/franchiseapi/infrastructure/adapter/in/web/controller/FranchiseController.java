@@ -4,10 +4,12 @@ import com.accenture.franchiseapi.application.port.in.franchise.CreateFranchiseU
 import com.accenture.franchiseapi.application.port.in.franchise.GetFranchiseUseCase;
 import com.accenture.franchiseapi.application.port.in.franchise.RenameFranchiseUseCase;
 import com.accenture.franchiseapi.application.port.in.franchise.TopStockPerBranchUseCase;
+import com.accenture.franchiseapi.application.service.franchise.GetAllFranchisesService;
 import com.accenture.franchiseapi.domain.model.valueobject.FranchiseId;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.CreateFranchiseRequest;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.RenameRequest;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.FranchiseResponse;
+import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.FranchiseSummaryResponse;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.TopStockProductResponse;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.mapper.WebMapper;
 import jakarta.validation.Valid;
@@ -35,6 +37,7 @@ public class FranchiseController {
     private final TopStockPerBranchUseCase topStockPerBranchUseCase;
     private final RenameFranchiseUseCase renameFranchiseUseCase;
     private final GetFranchiseUseCase getFranchiseUseCase;
+    private final GetAllFranchisesService getAllFranchisesService;
     private final WebMapper mapper;
 
     @PostMapping
@@ -51,6 +54,12 @@ public class FranchiseController {
                 .map(mapper::toResponse);
     }
 
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public Flux<FranchiseSummaryResponse> getAllFranchises() {
+        return getAllFranchisesService.execute()
+                .map(mapper::toSummaryResponse);
+    }
 
     @GetMapping("/{franchiseId}/top-stock-products")
     @ResponseStatus(HttpStatus.OK)

@@ -22,6 +22,7 @@ import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.Rena
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.request.UpdateProductStockRequest;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.BranchResponse;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.FranchiseResponse;
+import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.FranchiseSummaryResponse;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.ProductResponse;
 import com.accenture.franchiseapi.infrastructure.adapter.in.web.dto.response.TopStockProductResponse;
 import org.springframework.stereotype.Component;
@@ -106,5 +107,9 @@ public class WebMapper {
 
     public RenameFranchiseCommand toRenameFranchiseCommand(UUID franchiseId, RenameRequest request) {
         return new RenameFranchiseCommand(FranchiseId.of(franchiseId), request.name());
+    }
+
+    public FranchiseSummaryResponse toSummaryResponse(Franchise franchise) {
+        return new FranchiseSummaryResponse(franchise.getId().value(), franchise.getName());
     }
 }
