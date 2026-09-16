@@ -8,7 +8,7 @@ resource "aws_db_subnet_group" "franchise_db_subnet_group" {
 resource "aws_db_instance" "franchise_db" {
   identifier     = "franchise-api-db"
   engine         = "mysql"
-  engine_version = "8.0"
+  engine_version = "8.4"
 
   instance_class    = var.db_instance_class
   allocated_storage = 20
@@ -23,12 +23,13 @@ resource "aws_db_instance" "franchise_db" {
 
   publicly_accessible = false
 
-  # Simplifications intentional for a one-week technical assessment,
-  # NOT recommended defaults for a real production database:
   multi_az                 = false
   backup_retention_period  = 0
   skip_final_snapshot      = true
   deletion_protection      = false
+
+  allow_major_version_upgrade = true
+  apply_immediately            = true
 
   tags = { Name = "franchise-api-db" }
 }
